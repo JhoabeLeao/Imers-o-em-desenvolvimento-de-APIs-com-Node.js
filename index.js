@@ -4,6 +4,11 @@
 2 - Obter o endereço do usuario pelo Id
 */
 
+const util = require('util')
+const obterEnderecoAsync = util.promisify(obterEndereco)
+//obterEnderecoAsync().then
+
+
 function obterUsuario() {
     //quando der algum proble -> reject(erro)
     //quando der sucesso -> RESOLVE
@@ -56,8 +61,22 @@ usuarioPromise
             }
         })
     })
+    .then(function(resultado){
+        const endereco = obterEnderecoAsync(resultado.usuario.id)
+        return endereco.then(function resolverEndereco(result){
+            return {
+                usuario: resultado.usuario,
+                telefone: resultado.telefone,
+                endereco: result
+            }
+        })
+    })
     .then(function (resultado) {
-        console.log('resultado', resultado)
+        console.log(`
+        Nome: ${resultado.usuario.nome}
+        Endereco: ${resultado.endereco.rua}, ${resultado.endereco.numero}
+        Telefone: (${resultado.telefone.ddd}) ${resultado.telefone.telefone}
+        `)
     })
     .catch(function (error) {
         console.error('DEU RUIM', error)
