@@ -9,7 +9,6 @@ const util = require('util')
 const obterEnderecoAsync = util.promisify(obterEndereco)
 //obterEnderecoAsync().then
 
-
 function obterUsuario() {
     //quando der algum proble -> reject(erro)
     //quando der sucesso -> RESOLVE
@@ -52,6 +51,7 @@ async function main() {
         const usuario = await obterUsuario()
        // const telefone = await obterTelefone(usuario.id)
        // const endereco = await obterEnderecoAsync(usuario.id)
+        
        const resultado = await Promise.all([
            obterTelefone(usuario.id),
            obterEnderecoAsync(usuario.id)
